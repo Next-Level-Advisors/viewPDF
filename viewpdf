@@ -1,0 +1,49 @@
+<div id="pdf-container" style="width: 100%; height: 600px; border: 1px solid #ddd;"></div>
+
+<script>
+  (function() {
+    // Google Drive file ID from your URL
+    const fileId = '10vBi6d5kQLTcRQFFMvpM7pqCPAy15_zu';
+    
+    // Create container for viewer
+    const container = document.getElementById('pdf-container');
+    
+    // Try to use PDF.js first
+    const usePdfJs = function() {
+      const viewer = document.createElement('iframe');
+      viewer.id = 'pdf-js-viewer';
+      viewer.width = '100%';
+      viewer.height = '100%';
+      viewer.frameBorder = '0';
+      
+      // Use PDF.js web viewer with Google Drive file
+      viewer.src = `https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(`https://drive.google.com/uc?export=download&id=${fileId}`)}`;
+      
+      container.appendChild(viewer);
+      
+      // Set a fallback timer - if PDF.js fails to load properly, switch to Google viewer
+      setTimeout(useGoogleViewer, 5000);
+    };
+    
+    // Fallback to Google Drive viewer
+    const useGoogleViewer = function() {
+      // Clear container
+      container.innerHTML = '';
+      
+      // Create Google Drive viewer
+      const viewer = document.createElement('iframe');
+      viewer.width = '100%';
+      viewer.height = '100%';
+      viewer.frameBorder = '0';
+      viewer.allowFullscreen = true;
+      
+      // Use Google Drive preview
+      viewer.src = `https://drive.google.com/file/d/${fileId}/preview`;
+      
+      container.appendChild(viewer);
+    };
+    
+    // Start with PDF.js attempt
+    usePdfJs();
+  })();
+</script>
